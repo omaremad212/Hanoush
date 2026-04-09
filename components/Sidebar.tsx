@@ -97,11 +97,15 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           isOpen ? 'translate-x-0' : '-translate-x-full'
         )}
       >
-        {/* Logo + tagline + profile photo */}
-        <div className="px-6 py-5 border-b border-pink-100 dark:border-[#E91E8C]/15 space-y-4">
+        {/* Logo + tagline — profile photo replaces the star icon */}
+        <div className="px-6 py-5 border-b border-pink-100 dark:border-[#E91E8C]/15">
           <Link href="/" className="flex items-center gap-3 group" onClick={onClose}>
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#C2185B] to-[#E91E8C] flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
-              <span className="text-white text-base font-bold">✦</span>
+            <div className="group-hover:scale-105 transition-transform flex-shrink-0">
+              <ProfileAvatar
+                name={displayName || session?.user?.name || 'Hanoush'}
+                photoUrl={displayPhoto}
+                size="md"
+              />
             </div>
             <div>
               <span className="font-playfair font-bold text-lg text-[#3D0026] dark:text-pink-50 block leading-tight">
@@ -110,28 +114,6 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
               <span className="text-[10px] text-[#C2185B]/70 dark:text-[#E91E8C]/70 font-medium tracking-widest uppercase">
                 Content Creator
               </span>
-            </div>
-          </Link>
-
-          {/* Profile photo */}
-          <Link
-            href="/settings"
-            onClick={onClose}
-            className="flex items-center gap-2.5 px-1 group"
-            title="Edit profile"
-          >
-            <ProfileAvatar
-              name={displayName || session?.user?.name || 'U'}
-              photoUrl={displayPhoto}
-              size="sm"
-            />
-            <div className="min-w-0 flex-1">
-              <p className="text-xs font-semibold text-[#3D0026] dark:text-pink-100 truncate group-hover:text-[#C2185B] dark:group-hover:text-[#E91E8C] transition-colors">
-                {displayName || session?.user?.name || 'User'}
-              </p>
-              <p className="text-[10px] text-gray-400 dark:text-pink-400/50 truncate">
-                {session?.user?.email}
-              </p>
             </div>
           </Link>
         </div>
