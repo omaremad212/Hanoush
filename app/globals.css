@@ -1,0 +1,188 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --rose-light: #FFB6C1;
+  --blush: #FFC0CB;
+  --mauve: #C8A2C8;
+  --cream: #FFF5F5;
+  --plum: #6B2D5E;
+  --plum-dark: #4A1F42;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #FFF5F5;
+}
+::-webkit-scrollbar-thumb {
+  background: #C8A2C8;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #6B2D5E;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #2D1028;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: #8B3A7A;
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #C8A2C8;
+}
+
+/* Glass morphism */
+.glass {
+  background: rgba(255, 245, 245, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(200, 162, 200, 0.3);
+}
+
+.dark .glass {
+  background: rgba(45, 16, 40, 0.7);
+  border: 1px solid rgba(139, 58, 122, 0.3);
+}
+
+.glass-strong {
+  background: rgba(255, 245, 245, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(200, 162, 200, 0.4);
+}
+
+.dark .glass-strong {
+  background: rgba(45, 16, 40, 0.85);
+  border: 1px solid rgba(139, 58, 122, 0.4);
+}
+
+/* Page transition */
+.page-enter {
+  animation: slideUp 0.3s ease-out;
+}
+
+/* Shimmer skeleton */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    #f0d5d5 25%,
+    #fce4e4 50%,
+    #f0d5d5 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s linear infinite;
+}
+
+.dark .skeleton {
+  background: linear-gradient(
+    90deg,
+    #3d1535 25%,
+    #4a1f42 50%,
+    #3d1535 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s linear infinite;
+}
+
+/* Pink gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, #6B2D5E 0%, #C8A2C8 50%, #FFB6C1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Task completed strikethrough */
+.task-complete {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+/* Floating card shadow */
+.card-shadow {
+  box-shadow: 0 4px 20px rgba(107, 45, 94, 0.08), 0 1px 4px rgba(107, 45, 94, 0.05);
+}
+
+.dark .card-shadow {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Priority badge */
+.priority-high {
+  @apply bg-rose-100 text-rose-700 border border-rose-200;
+}
+.priority-medium {
+  @apply bg-purple-100 text-purple-700 border border-purple-200;
+}
+.priority-low {
+  @apply bg-amber-50 text-amber-700 border border-amber-200;
+}
+
+.dark .priority-high {
+  @apply bg-rose-900/30 text-rose-300 border-rose-700/50;
+}
+.dark .priority-medium {
+  @apply bg-purple-900/30 text-purple-300 border-purple-700/50;
+}
+.dark .priority-low {
+  @apply bg-amber-900/20 text-amber-300 border-amber-700/50;
+}
+
+/* Input styling */
+.input-base {
+  @apply w-full px-4 py-2.5 rounded-xl border border-pink-200 bg-white/80 text-gray-700 placeholder-gray-400
+         focus:outline-none focus:ring-2 focus:ring-mauve/40 focus:border-mauve transition-all duration-200
+         dark:bg-plum-dark/50 dark:border-plum-light/30 dark:text-pink-100 dark:placeholder-pink-300/40
+         dark:focus:ring-mauve/30 dark:focus:border-mauve/60;
+}
+
+/* Button base */
+.btn-primary {
+  @apply px-5 py-2.5 bg-gradient-to-r from-plum to-plum-light text-white rounded-xl font-medium
+         hover:opacity-90 active:scale-95 transition-all duration-200 shadow-sm
+         disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+.btn-secondary {
+  @apply px-5 py-2.5 bg-pink-50 text-plum border border-pink-200 rounded-xl font-medium
+         hover:bg-pink-100 active:scale-95 transition-all duration-200
+         dark:bg-plum-dark/50 dark:text-pink-200 dark:border-plum-light/40 dark:hover:bg-plum-dark;
+}
+
+/* Sidebar active */
+.sidebar-active {
+  @apply bg-gradient-to-r from-plum/10 to-mauve/20 text-plum border-r-2 border-plum
+         dark:from-plum/30 dark:to-mauve/20 dark:text-pink-200 dark:border-mauve;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background-color: #FFF5F5;
+}
+
+.dark body {
+  background-color: #1a0818;
+}
+
+.dark {
+  background-color: #1a0818;
+  color: #f9d4e4;
+}
+
+/* Modal backdrop */
+.modal-backdrop {
+  background: rgba(107, 45, 94, 0.4);
+  backdrop-filter: blur(4px);
+}
