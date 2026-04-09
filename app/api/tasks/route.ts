@@ -53,9 +53,15 @@ export async function GET() {
   } catch (error) {
     console.error('GET /api/tasks error:', error)
     const msg = error instanceof Error ? error.message : 'Unknown error'
-    if (msg.includes('connect') || msg.includes('ECONNREFUSED') || msg.includes('does not exist')) {
+    if (msg.includes('does not exist') || msg.includes('column') || msg.includes('userId') || msg.includes('imageUrl')) {
       return NextResponse.json(
-        { error: `Database connection failed. Run "prisma db push" and verify DATABASE_URL. (${msg})` },
+        { error: `SCHEMA_OUTDATED: The database is missing new columns (userId / imageUrl). Run the SQL migration in Vercel Postgres to fix. (${msg})` },
+        { status: 503 }
+      )
+    }
+    if (msg.includes('connect') || msg.includes('ECONNREFUSED')) {
+      return NextResponse.json(
+        { error: `Database connection failed. Verify DATABASE_URL in Vercel → Settings → Environment Variables. (${msg})` },
         { status: 503 }
       )
     }
