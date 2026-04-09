@@ -76,10 +76,10 @@ export default function DashboardPage() {
           {/* Page header */}
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="font-playfair text-2xl md:text-3xl font-bold text-[#3D0026]">
+              <h1 className="font-playfair text-2xl md:text-3xl font-bold text-[#3D0026] dark:text-pink-50">
                 Dashboard
               </h1>
-              <p className="text-sm text-[#C2185B]/60 mt-0.5">
+              <p className="text-sm text-[#C2185B]/60 dark:text-pink-400/60 mt-0.5">
                 Here&apos;s your overview for today
               </p>
             </div>
@@ -98,10 +98,10 @@ export default function DashboardPage() {
             <>
               <StatsCards stats={stats} loading={loading} />
 
-              <div className="bg-white rounded-2xl border border-pink-100 p-5 card-shadow">
+              <div className="bg-white dark:bg-[#3d0030] rounded-2xl border border-pink-100 dark:border-[#E91E8C]/15 p-5 card-shadow">
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="font-playfair text-lg font-semibold text-[#3D0026]">Recent Tasks</h2>
-                  <a href="/tasks" className="text-xs text-[#C2185B] hover:text-[#880E4F] transition-colors font-medium">
+                  <h2 className="font-playfair text-lg font-semibold text-[#3D0026] dark:text-pink-50">Recent Tasks</h2>
+                  <a href="/tasks" className="text-xs text-[#C2185B] dark:text-[#E91E8C] hover:text-[#880E4F] dark:hover:text-pink-300 transition-colors font-medium">
                     View all →
                   </a>
                 </div>

@@ -14,15 +14,24 @@
   --mauve: #F8BBD9;
 }
 
+.dark {
+  --accent: #E91E8C;
+  --accent-light: #F48FB1;
+  --text: #fce7f3;
+  --bg: #1a0011;
+  --border: #E91E8C;
+  --mauve: #C8A2C8;
+}
+
 /* ── Custom scrollbar ───────────────────────────────── */
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: #FFF0F3; }
 ::-webkit-scrollbar-thumb { background: #F8BBD9; border-radius: 10px; }
 ::-webkit-scrollbar-thumb:hover { background: #C2185B; }
 
-.dark ::-webkit-scrollbar-track { background: #1a000d; }
-.dark ::-webkit-scrollbar-thumb { background: #880E4F; }
-.dark ::-webkit-scrollbar-thumb:hover { background: #F48FB1; }
+.dark ::-webkit-scrollbar-track { background: #1a0011; }
+.dark ::-webkit-scrollbar-thumb { background: #6d1048; border-radius: 10px; }
+.dark ::-webkit-scrollbar-thumb:hover { background: #E91E8C; }
 
 /* ── Page base ──────────────────────────────────────── */
 html { scroll-behavior: smooth; }
@@ -33,11 +42,11 @@ body {
   color: #3D0026;
 }
 
-.dark body { background-color: #1a000d; }
-.dark { background-color: #1a000d; color: #fce7f3; }
+.dark body { background-color: #1a0011; }
+.dark { background-color: #1a0011; color: #fce7f3; }
 
 /* ── Glassmorphism ──────────────────────────────────── */
-/* Light mode: clean white cards with soft pink border */
+/* Light mode: clean white cards */
 .glass {
   background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(12px);
@@ -45,21 +54,28 @@ body {
   border: 1px solid rgba(255, 182, 193, 0.35);
 }
 
+/* Dark cards: deep plum #3d0030 */
 .dark .glass {
-  background: rgba(26, 0, 13, 0.75);
-  border: 1px solid rgba(136, 14, 79, 0.35);
+  background: rgba(61, 0, 48, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(233, 30, 140, 0.20);
 }
 
+/* Light sidebar */
 .glass-strong {
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.97);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 182, 193, 0.40);
 }
 
+/* Dark sidebar: #2d0020 */
 .dark .glass-strong {
-  background: rgba(26, 0, 13, 0.92);
-  border: 1px solid rgba(136, 14, 79, 0.40);
+  background: rgba(45, 0, 32, 0.97);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(233, 30, 140, 0.22);
 }
 
 /* ── Page transition ────────────────────────────────── */
@@ -72,14 +88,14 @@ body {
   animation: shimmer 2s linear infinite;
 }
 .dark .skeleton {
-  background: linear-gradient(90deg, #2d0018 25%, #3d0026 50%, #2d0018 75%);
+  background: linear-gradient(90deg, #3d0030 25%, #4d003c 50%, #3d0030 75%);
   background-size: 200% 100%;
   animation: shimmer 2s linear infinite;
 }
 
 /* ── Gradient text ──────────────────────────────────── */
 .gradient-text {
-  background: linear-gradient(135deg, #C2185B 0%, #E91E8C 50%, #FFB6C1 100%);
+  background: linear-gradient(135deg, #E91E8C 0%, #F48FB1 50%, #FFB6C1 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -93,15 +109,15 @@ body {
   box-shadow: 0 2px 16px rgba(194, 24, 91, 0.06), 0 1px 4px rgba(194, 24, 91, 0.04);
 }
 .dark .card-shadow {
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35), 0 1px 4px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.50), 0 1px 6px rgba(233, 30, 140, 0.10);
 }
 
 /* ── Inputs ─────────────────────────────────────────── */
 .input-base {
   @apply w-full px-4 py-2.5 rounded-xl border border-pink-200 bg-white text-[#3D0026] placeholder-gray-300
          focus:outline-none focus:ring-2 focus:ring-[#C2185B]/20 focus:border-[#C2185B] transition-all duration-200
-         dark:bg-[#2d0018]/60 dark:border-[#880E4F]/40 dark:text-pink-100 dark:placeholder-pink-400/30
-         dark:focus:ring-[#C2185B]/20 dark:focus:border-[#C2185B]/60;
+         dark:bg-[#3d0030]/80 dark:border-[#E91E8C]/20 dark:text-pink-100 dark:placeholder-pink-400/30
+         dark:focus:ring-[#E91E8C]/25 dark:focus:border-[#E91E8C]/60;
 }
 
 /* ── Buttons ────────────────────────────────────────── */
@@ -115,22 +131,25 @@ body {
 .btn-secondary {
   @apply px-5 py-2.5 bg-white text-[#3D0026] border border-pink-200 rounded-xl font-medium text-sm
          hover:bg-[#FFF0F3] hover:border-[#C2185B]/40 active:scale-95 transition-all duration-200
-         dark:bg-[#2d0018]/60 dark:text-pink-200 dark:border-[#880E4F]/40 dark:hover:bg-[#3d0026]/60;
+         dark:bg-[#3d0030]/60 dark:text-pink-200 dark:border-[#E91E8C]/20 dark:hover:bg-[#4d003c]/60;
 }
 
 /* ── Modal backdrop ─────────────────────────────────── */
 .modal-backdrop {
-  background: rgba(61, 0, 38, 0.35);
-  backdrop-filter: blur(4px);
+  background: rgba(10, 0, 8, 0.70);
+  backdrop-filter: blur(6px);
 }
 
 /* ── Priority badges ────────────────────────────────── */
 .priority-high {
-  @apply bg-rose-50 text-rose-700 border border-rose-200;
+  @apply bg-rose-50 text-rose-700 border border-rose-200
+         dark:bg-rose-900/30 dark:text-rose-300 dark:border-rose-700/30;
 }
 .priority-medium {
-  @apply bg-pink-50 text-pink-700 border border-pink-200;
+  @apply bg-pink-50 text-pink-700 border border-pink-200
+         dark:bg-pink-900/30 dark:text-pink-300 dark:border-pink-700/30;
 }
 .priority-low {
-  @apply bg-gray-50 text-gray-500 border border-gray-200;
+  @apply bg-gray-50 text-gray-500 border border-gray-200
+         dark:bg-[#3d0030] dark:text-pink-300/60 dark:border-[#E91E8C]/15;
 }
