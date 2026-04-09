@@ -13,11 +13,22 @@
   --border: #FFB6C1;
 }
 
+.dark {
+  --accent: #E91E8C;
+  --text: #fce7f3;
+  --bg: #1a0011;
+  --border: #E91E8C;
+}
+
 /* ── Custom scrollbar ───────────────────────────────── */
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: #FFF0F3; }
 ::-webkit-scrollbar-thumb { background: #F8BBD9; border-radius: 10px; }
 ::-webkit-scrollbar-thumb:hover { background: #C2185B; }
+
+.dark ::-webkit-scrollbar-track { background: #1a0011; }
+.dark ::-webkit-scrollbar-thumb { background: #6d1048; border-radius: 10px; }
+.dark ::-webkit-scrollbar-thumb:hover { background: #E91E8C; }
 
 /* ── Page base ──────────────────────────────────────── */
 html { scroll-behavior: smooth; }
@@ -28,12 +39,21 @@ body {
   color: #3D0026;
 }
 
-/* ── Glassmorphism — white cards on #FFF0F3 background ─ */
+.dark body { background-color: #1a0011; }
+.dark { background-color: #1a0011; color: #fce7f3; }
+
+/* ── Glassmorphism ──────────────────────────────────── */
 .glass {
   background: rgba(255, 255, 255, 0.90);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 182, 193, 0.40);
+}
+.dark .glass {
+  background: rgba(61, 0, 48, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(233, 30, 140, 0.20);
 }
 
 .glass-strong {
@@ -42,6 +62,12 @@ body {
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 182, 193, 0.45);
 }
+.dark .glass-strong {
+  background: rgba(45, 0, 32, 0.97);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(233, 30, 140, 0.22);
+}
 
 /* ── Page transition ────────────────────────────────── */
 .page-enter { animation: slideUp 0.3s ease-out; }
@@ -49,6 +75,11 @@ body {
 /* ── Skeleton shimmer ───────────────────────────────── */
 .skeleton {
   background: linear-gradient(90deg, #ffe4ec 25%, #fff0f5 50%, #ffe4ec 75%);
+  background-size: 200% 100%;
+  animation: shimmer 2s linear infinite;
+}
+.dark .skeleton {
+  background: linear-gradient(90deg, #3d0030 25%, #4d003c 50%, #3d0030 75%);
   background-size: 200% 100%;
   animation: shimmer 2s linear infinite;
 }
@@ -68,11 +99,16 @@ body {
 .card-shadow {
   box-shadow: 0 2px 16px rgba(194, 24, 91, 0.07), 0 1px 4px rgba(194, 24, 91, 0.04);
 }
+.dark .card-shadow {
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.50), 0 1px 6px rgba(233, 30, 140, 0.10);
+}
 
 /* ── Inputs ─────────────────────────────────────────── */
 .input-base {
   @apply w-full px-4 py-2.5 rounded-xl border border-pink-200 bg-white text-[#3D0026] placeholder-gray-300
-         focus:outline-none focus:ring-2 focus:ring-[#C2185B]/20 focus:border-[#C2185B] transition-all duration-200;
+         focus:outline-none focus:ring-2 focus:ring-[#C2185B]/20 focus:border-[#C2185B] transition-all duration-200
+         dark:bg-[#3d0030]/80 dark:border-[#E91E8C]/20 dark:text-pink-100 dark:placeholder-pink-400/30
+         dark:focus:ring-[#E91E8C]/25 dark:focus:border-[#E91E8C]/60;
 }
 
 /* ── Buttons ────────────────────────────────────────── */
@@ -85,16 +121,26 @@ body {
 
 .btn-secondary {
   @apply px-5 py-2.5 bg-white text-[#3D0026] border border-pink-200 rounded-xl font-medium text-sm
-         hover:bg-[#FFF0F3] hover:border-[#C2185B]/40 active:scale-95 transition-all duration-200;
+         hover:bg-[#FFF0F3] hover:border-[#C2185B]/40 active:scale-95 transition-all duration-200
+         dark:bg-[#3d0030]/60 dark:text-pink-200 dark:border-[#E91E8C]/20 dark:hover:bg-[#4d003c]/60;
 }
 
 /* ── Modal backdrop ─────────────────────────────────── */
 .modal-backdrop {
-  background: rgba(61, 0, 38, 0.30);
-  backdrop-filter: blur(4px);
+  background: rgba(10, 0, 8, 0.70);
+  backdrop-filter: blur(6px);
 }
 
 /* ── Priority badges ────────────────────────────────── */
-.priority-high  { @apply bg-rose-50 text-rose-700 border border-rose-200; }
-.priority-medium { @apply bg-pink-50 text-pink-700 border border-pink-200; }
-.priority-low   { @apply bg-gray-50 text-gray-500 border border-gray-200; }
+.priority-high {
+  @apply bg-rose-50 text-rose-700 border border-rose-200
+         dark:bg-rose-900/30 dark:text-rose-300 dark:border-rose-700/30;
+}
+.priority-medium {
+  @apply bg-pink-50 text-pink-700 border border-pink-200
+         dark:bg-pink-900/30 dark:text-pink-300 dark:border-pink-700/30;
+}
+.priority-low {
+  @apply bg-gray-50 text-gray-500 border border-gray-200
+         dark:bg-[#3d0030] dark:text-pink-300/60 dark:border-[#E91E8C]/15;
+}
