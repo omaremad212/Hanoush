@@ -19,13 +19,14 @@ const dmSans = DM_Sans({
 export const metadata: Metadata = {
   title: 'Hanoush — Content Creator Dashboard',
   description: 'Your personal luxury task manager for content creators',
-  icons: { icon: '/avatar.jpg' },
+  icons: { icon: '/favicon.png' },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={`${playfair.variable} ${dmSans.variable} font-dm antialiased`}>
+        <ThemeScript />
         <SessionProvider>
           {children}
         </SessionProvider>
@@ -34,20 +35,39 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           toastOptions={{
             duration: 3000,
             style: {
-              background: '#ffffff',
-              color: '#3D0026',
-              border: '1px solid #FFB6C1',
+              background: '#2d0020',
+              color: '#fce7f3',
+              border: '1px solid rgba(233,30,140,0.25)',
               borderRadius: '14px',
               fontFamily: 'DM Sans, sans-serif',
               fontSize: '14px',
-              boxShadow: '0 4px 20px rgba(194,24,91,0.10)',
+              boxShadow: '0 4px 24px rgba(0,0,0,0.40)',
             },
             success: {
-              iconTheme: { primary: '#C2185B', secondary: '#ffffff' },
+              iconTheme: { primary: '#E91E8C', secondary: '#2d0020' },
             },
           }}
         />
       </body>
     </html>
+  )
+}
+
+function ThemeScript() {
+  return (
+    <script
+      dangerouslySetInnerHTML={{
+        __html: `
+          (function() {
+            try {
+              const theme = localStorage.getItem('theme');
+              if (theme !== 'light') {
+                document.documentElement.classList.add('dark');
+              }
+            } catch(e) {}
+          })();
+        `,
+      }}
+    />
   )
 }

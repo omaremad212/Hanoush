@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
 import ProfileAvatar from './ProfileAvatar'
+import DarkModeToggle from './DarkModeToggle'
 import { getGreeting, getTodayFormatted } from '@/lib/utils'
 
 interface TopBarProps {
@@ -66,6 +67,7 @@ export default function TopBar({ onMenuClick }: TopBarProps) {
 
         {/* Right: dark mode + avatar */}
         <div className="flex items-center gap-3 flex-shrink-0">
+          <DarkModeToggle />
           <Link href="/settings" className="hover:opacity-80 transition-opacity">
             <ProfileAvatar name={displayName} photoUrl={displayPhoto} size="sm" />
           </Link>
