@@ -2,7 +2,9 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import { signOut, useSession } from 'next-auth/react'
+import ProfileAvatar from './ProfileAvatar'
 import { cn } from '@/lib/utils'
 
 interface SidebarProps {
@@ -53,13 +55,34 @@ const navItems = [
 export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   const pathname = usePathname()
   const { data: session } = useSession()
+  const [displayName, setDisplayName] = useState('')
+  const [displayPhoto, setDisplayPhoto] = useState<string | null>(null)
+
+  const loadProfile = () => {
+    const storedName = localStorage.getItem('userName')
+    const storedPhoto = localStorage.getItem('userPhoto')
+    setDisplayName(storedName || session?.user?.name || '')
+    setDisplayPhoto(storedPhoto || session?.user?.image || null)
+  }
+
+  useEffect(() => {
+    loadProfile()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [session])
+
+  useEffect(() => {
+    const handler = () => loadProfile()
+    window.addEventListener('profileUpdated', handler)
+    return () => window.removeEventListener('profileUpdated', handler)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [session])
 
   return (
     <>
       {/* Mobile overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 z-20 bg-[#3D0026]/20 backdrop-blur-sm md:hidden"
+          className="fixed inset-0 z-20 bg-black/60 backdrop-blur-sm md:hidden"
           onClick={onClose}
         />
       )}
@@ -68,32 +91,54 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
       <aside
         className={cn(
           'fixed left-0 top-0 h-full w-64 z-30',
-          'bg-white border-r border-pink-100 shadow-sm',
+          'glass-strong',
           'flex flex-col transition-transform duration-300 ease-in-out',
           'md:translate-x-0 md:static md:z-auto',
           isOpen ? 'translate-x-0' : '-translate-x-full'
         )}
       >
-        {/* Logo + tagline */}
-        <div className="px-6 py-6 border-b border-pink-50">
+        {/* Logo + tagline + profile photo */}
+        <div className="px-6 py-5 border-b border-pink-100 dark:border-[#E91E8C]/15 space-y-4">
           <Link href="/" className="flex items-center gap-3 group" onClick={onClose}>
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#C2185B] to-[#F48FB1] flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#C2185B] to-[#E91E8C] flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
               <span className="text-white text-base font-bold">✦</span>
             </div>
             <div>
-              <span className="font-playfair font-bold text-lg text-[#3D0026] block leading-tight">
+              <span className="font-playfair font-bold text-lg text-[#3D0026] dark:text-pink-50 block leading-tight">
                 Hanoush
               </span>
-              <span className="text-[10px] text-[#C2185B]/70 font-medium tracking-widest uppercase">
+              <span className="text-[10px] text-[#C2185B]/70 dark:text-[#E91E8C]/70 font-medium tracking-widest uppercase">
                 Content Creator
               </span>
+            </div>
+          </Link>
+
+          {/* Profile photo */}
+          <Link
+            href="/settings"
+            onClick={onClose}
+            className="flex items-center gap-2.5 px-1 group"
+            title="Edit profile"
+          >
+            <ProfileAvatar
+              name={displayName || session?.user?.name || 'U'}
+              photoUrl={displayPhoto}
+              size="sm"
+            />
+            <div className="min-w-0 flex-1">
+              <p className="text-xs font-semibold text-[#3D0026] dark:text-pink-100 truncate group-hover:text-[#C2185B] dark:group-hover:text-[#E91E8C] transition-colors">
+                {displayName || session?.user?.name || 'User'}
+              </p>
+              <p className="text-[10px] text-gray-400 dark:text-pink-400/50 truncate">
+                {session?.user?.email}
+              </p>
             </div>
           </Link>
         </div>
 
         {/* Navigation */}
         <nav className="flex-1 px-3 py-5 space-y-0.5 overflow-y-auto">
-          <p className="text-[10px] font-bold text-gray-300 uppercase tracking-widest px-3 mb-3">
+          <p className="text-[10px] font-bold text-gray-300 dark:text-pink-400/35 uppercase tracking-widest px-3 mb-3">
             Navigation
           </p>
           {navItems.map((item) => {
@@ -106,50 +151,34 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                 className={cn(
                   'flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group',
                   isActive
-                    ? 'bg-[#FFF0F3] text-[#C2185B] shadow-sm'
-                    : 'text-gray-500 hover:bg-pink-50/80 hover:text-[#C2185B]'
+                    ? 'bg-[#FFF0F3] text-[#C2185B] shadow-sm dark:bg-[#E91E8C]/15 dark:text-[#E91E8C]'
+                    : 'text-gray-500 hover:bg-pink-50/80 hover:text-[#C2185B] dark:text-pink-300/60 dark:hover:bg-[#E91E8C]/10 dark:hover:text-pink-200'
                 )}
               >
                 <span
                   className={cn(
                     'transition-colors',
-                    isActive ? 'text-[#C2185B]' : 'text-gray-300 group-hover:text-[#C2185B]'
+                    isActive
+                      ? 'text-[#C2185B] dark:text-[#E91E8C]'
+                      : 'text-gray-300 group-hover:text-[#C2185B] dark:text-pink-400/30 dark:group-hover:text-pink-300'
                   )}
                 >
                   {item.icon}
                 </span>
                 {item.label}
                 {isActive && (
-                  <span className="ml-auto w-1.5 h-1.5 rounded-full bg-[#C2185B]" />
+                  <span className="ml-auto w-1.5 h-1.5 rounded-full bg-[#C2185B] dark:bg-[#E91E8C]" />
                 )}
               </Link>
             )
           })}
         </nav>
 
-        {/* User + sign out */}
-        <div className="px-4 py-4 border-t border-pink-50 space-y-3">
-          {session?.user && (
-            <div className="flex items-center gap-2.5 px-2">
-              {session.user.image && (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={session.user.image}
-                  alt={session.user.name ?? ''}
-                  className="w-7 h-7 rounded-full ring-1 ring-pink-200 object-cover"
-                />
-              )}
-              <div className="min-w-0 flex-1">
-                <p className="text-xs font-semibold text-[#3D0026] truncate">
-                  {session.user.name}
-                </p>
-                <p className="text-[10px] text-gray-400 truncate">{session.user.email}</p>
-              </div>
-            </div>
-          )}
+        {/* Sign out */}
+        <div className="px-4 py-4 border-t border-pink-50 dark:border-[#E91E8C]/15">
           <button
             onClick={() => signOut({ callbackUrl: '/login' })}
-            className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs text-gray-400 hover:text-[#C2185B] hover:bg-pink-50 transition-all duration-200"
+            className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs text-gray-400 hover:text-[#C2185B] hover:bg-pink-50 dark:text-pink-400/40 dark:hover:text-[#E91E8C] dark:hover:bg-[#E91E8C]/10 transition-all duration-200"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />

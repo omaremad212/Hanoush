@@ -81,8 +81,8 @@ export default function TasksPage() {
         <div className="max-w-4xl mx-auto space-y-5 animate-fade-in">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="font-playfair text-2xl md:text-3xl font-bold text-[#3D0026]">My Tasks</h1>
-              <p className="text-sm text-[#C2185B]/60 mt-0.5">
+              <h1 className="font-playfair text-2xl md:text-3xl font-bold text-[#3D0026] dark:text-pink-50">My Tasks</h1>
+              <p className="text-sm text-[#C2185B]/60 dark:text-pink-400/60 mt-0.5">
                 {tasks.filter((t) => !t.completed).length} pending tasks
               </p>
             </div>
@@ -130,14 +130,14 @@ export default function TasksPage() {
                       'flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-sm font-medium whitespace-nowrap transition-all duration-200 flex-shrink-0',
                       filter === f.value
                         ? 'text-white shadow-sm'
-                        : 'bg-white text-gray-500 hover:text-[#C2185B] hover:bg-pink-50 border border-pink-100'
+                        : 'bg-white dark:bg-[#3d0030] text-gray-500 dark:text-pink-300/60 hover:text-[#C2185B] dark:hover:text-pink-200 hover:bg-pink-50 dark:hover:bg-[#E91E8C]/10 border border-pink-100 dark:border-[#E91E8C]/15'
                     )}
                     style={filter === f.value ? { background: 'linear-gradient(135deg,#C2185B,#E91E8C)' } : undefined}
                   >
                     {f.emoji} {f.label}
                     <span className={cn(
                       'ml-0.5 px-1.5 py-0.5 rounded-full text-xs',
-                      filter === f.value ? 'bg-white/25 text-white' : 'bg-pink-50 text-[#C2185B]'
+                      filter === f.value ? 'bg-white/25 text-white' : 'bg-pink-50 dark:bg-[#E91E8C]/15 text-[#C2185B] dark:text-[#E91E8C]'
                     )}>
                       {filterCounts[f.value]}
                     </span>
@@ -145,7 +145,7 @@ export default function TasksPage() {
                 ))}
               </div>
 
-              <div className="bg-white rounded-2xl border border-pink-100 p-5 card-shadow">
+              <div className="bg-white dark:bg-[#3d0030] rounded-2xl border border-pink-100 dark:border-[#E91E8C]/15 p-5 card-shadow">
                 <TaskList tasks={tasks} loading={loading} filter={filter} searchQuery={search} onTasksChange={setTasks} />
               </div>
             </>

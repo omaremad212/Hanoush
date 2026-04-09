@@ -15,12 +15,12 @@ interface StatCardProps {
 function StatCard({ title, value, icon, valueColor, iconBg, delay = '0s' }: StatCardProps) {
   return (
     <div
-      className="bg-white rounded-2xl p-5 border border-pink-100 card-shadow animate-float hover:scale-105 transition-transform duration-200 cursor-default"
+      className="bg-white dark:bg-[#3d0030] rounded-2xl p-5 border border-pink-100 dark:border-[#E91E8C]/15 card-shadow animate-float hover:scale-105 transition-transform duration-200 cursor-default"
       style={{ animationDelay: delay }}
     >
       <div className="flex items-start justify-between">
         <div>
-          <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">{title}</p>
+          <p className="text-xs font-semibold text-gray-400 dark:text-pink-400/60 uppercase tracking-wider mb-1">{title}</p>
           <p className={cn('text-3xl font-bold font-playfair', valueColor)}>{value}</p>
         </div>
         <div className={cn('w-10 h-10 rounded-xl flex items-center justify-center', iconBg)}>
@@ -33,7 +33,7 @@ function StatCard({ title, value, icon, valueColor, iconBg, delay = '0s' }: Stat
 
 function StatCardSkeleton() {
   return (
-    <div className="bg-white rounded-2xl p-5 border border-pink-100">
+    <div className="bg-white dark:bg-[#3d0030] rounded-2xl p-5 border border-pink-100 dark:border-[#E91E8C]/15">
       <div className="flex items-start justify-between">
         <div className="space-y-2">
           <div className="skeleton h-3 w-24 rounded" />
@@ -58,34 +58,34 @@ export default function StatsCards({ stats, loading }: { stats: StatsData | null
     {
       title: 'Total Tasks',
       value: stats.total,
-      valueColor: 'text-[#3D0026]',
-      iconBg: 'bg-[#FFF0F3]',
+      valueColor: 'text-[#3D0026] dark:text-pink-50',
+      iconBg: 'bg-[#FFF0F3] dark:bg-[#E91E8C]/15',
       delay: '0s',
-      icon: <svg className="w-5 h-5 text-[#C2185B]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>,
+      icon: <svg className="w-5 h-5 text-[#C2185B] dark:text-[#E91E8C]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 002-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>,
     },
     {
       title: 'Done Today',
       value: stats.completedToday,
-      valueColor: 'text-emerald-600',
-      iconBg: 'bg-emerald-50',
+      valueColor: 'text-emerald-600 dark:text-emerald-400',
+      iconBg: 'bg-emerald-50 dark:bg-emerald-900/30',
       delay: '0.4s',
-      icon: <svg className="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>,
+      icon: <svg className="w-5 h-5 text-emerald-500 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>,
     },
     {
       title: 'Pending',
       value: stats.pending,
-      valueColor: 'text-amber-600',
-      iconBg: 'bg-amber-50',
+      valueColor: 'text-amber-600 dark:text-amber-400',
+      iconBg: 'bg-amber-50 dark:bg-amber-900/30',
       delay: '0.8s',
-      icon: <svg className="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>,
+      icon: <svg className="w-5 h-5 text-amber-500 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>,
     },
     {
       title: 'Overdue',
       value: stats.overdue,
-      valueColor: 'text-red-600',
-      iconBg: 'bg-red-50',
+      valueColor: 'text-red-600 dark:text-red-400',
+      iconBg: 'bg-red-50 dark:bg-red-900/30',
       delay: '1.2s',
-      icon: <svg className="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>,
+      icon: <svg className="w-5 h-5 text-red-400 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>,
     },
   ]
 
