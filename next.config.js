@@ -8,9 +8,8 @@ const nextConfig = {
       },
     ],
   },
-  experimental: {
-    serverComponentsExternalPackages: ['@prisma/client'],
-  },
+  // Prisma needs to be bundled on the server in Next.js 14
+  serverExternalPackages: ['@prisma/client', 'prisma'],
 }
 
 module.exports = nextConfig
