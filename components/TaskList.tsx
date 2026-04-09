@@ -51,7 +51,6 @@ export default function TaskList({
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
   )
 
-  // Filter tasks
   const filteredTasks = tasks.filter((task) => {
     const matchesSearch =
       !searchQuery ||
@@ -82,7 +81,6 @@ export default function TaskList({
       const oldIndex = tasks.findIndex((t) => t.id === active.id)
       const newIndex = tasks.findIndex((t) => t.id === over.id)
       const reordered = arrayMove(tasks, oldIndex, newIndex)
-
       onTasksChange(reordered)
 
       try {
@@ -99,11 +97,7 @@ export default function TaskList({
   )
 
   const handleToggle = async (id: string, completed: boolean) => {
-    const prev = tasks.find((t) => t.id === id)
-    if (!prev) return
-
     onTasksChange(tasks.map((t) => (t.id === id ? { ...t, completed } : t)))
-
     try {
       const res = await fetch(`/api/tasks/${id}`, {
         method: 'PATCH',
@@ -155,38 +149,46 @@ export default function TaskList({
     }
   }
 
+  const handleRemoveImage = async (id: string) => {
+    onTasksChange(tasks.map((t) => (t.id === id ? { ...t, imageUrl: null } : t)))
+    try {
+      await fetch(`/api/tasks/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ imageUrl: null }),
+      })
+      toast.success('Image removed')
+    } catch {
+      toast.error('Failed to remove image')
+    }
+  }
+
   if (loading) {
     return (
       <div className="space-y-3">
-        {Array.from({ length: 5 }).map((_, i) => (
-          <TaskCardSkeleton key={i} />
-        ))}
+        {Array.from({ length: 4 }).map((_, i) => <TaskCardSkeleton key={i} />)}
       </div>
     )
   }
 
   if (filteredTasks.length === 0) {
     return (
-      <div className="text-center py-16 animate-fade-in">
-        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-pink-100 to-mauve/20 dark:from-plum-dark/50 dark:to-mauve/20 flex items-center justify-center mx-auto mb-4">
-          <span className="text-3xl">
+      <div className="text-center py-14 animate-fade-in">
+        <div className="w-14 h-14 rounded-2xl bg-pink-50 flex items-center justify-center mx-auto mb-3">
+          <span className="text-2xl">
             {filter === 'completed' ? '🎉' : filter === 'overdue' ? '✨' : '📝'}
           </span>
         </div>
-        <p className="font-playfair text-base font-semibold text-plum dark:text-pink-300 mb-1">
+        <p className="font-playfair text-base font-semibold text-[#3D0026] mb-1">
           {searchQuery
             ? 'No tasks match your search'
-            : filter === 'completed'
-            ? 'No completed tasks yet'
-            : filter === 'overdue'
-            ? 'No overdue tasks — great job!'
-            : filter === 'today'
-            ? 'No tasks due today'
-            : filter === 'week'
-            ? 'No tasks this week'
+            : filter === 'completed' ? 'No completed tasks yet'
+            : filter === 'overdue' ? 'No overdue tasks — great job!'
+            : filter === 'today' ? 'No tasks due today'
+            : filter === 'week' ? 'No tasks this week'
             : 'No tasks yet'}
         </p>
-        <p className="text-sm text-gray-400 dark:text-pink-400/40">
+        <p className="text-sm text-gray-400">
           {!searchQuery && filter === 'all' && 'Add your first task to get started ✨'}
         </p>
       </div>
@@ -214,6 +216,7 @@ export default function TaskList({
                 onEdit={setEditingTask}
                 onDelete={setDeletingTask}
                 onAISuggest={setAiTask}
+                onRemoveImage={handleRemoveImage}
               />
             ))}
           </div>
@@ -229,7 +232,6 @@ export default function TaskList({
           loading={saving}
         />
       )}
-
       {deletingTask && (
         <DeleteConfirmModal
           taskTitle={deletingTask.title}
@@ -238,10 +240,7 @@ export default function TaskList({
           loading={deleting}
         />
       )}
-
-      {aiTask && (
-        <AISuggestModal task={aiTask} onClose={() => setAiTask(null)} />
-      )}
+      {aiTask && <AISuggestModal task={aiTask} onClose={() => setAiTask(null)} />}
     </>
   )
 }

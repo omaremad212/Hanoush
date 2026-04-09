@@ -10,19 +10,20 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // Light feminine palette
         rose: {
-          light: '#FFB6C1',
+          light: '#FFB6C1',   // warm rose — sidebar accents
           DEFAULT: '#FFC0CB',
-          dark: '#E8A0AB',
+          dark: '#F48FB1',    // medium rose
         },
-        blush: '#FFC0CB',
-        mauve: '#C8A2C8',
-        cream: '#FFF5F5',
+        blush: '#FFF0F3',      // page background
+        mauve: '#F8BBD9',      // soft petal pink — borders, labels
+        cream: '#FFF0F3',      // alias for blush
         plum: {
-          light: '#8B3A7A',
-          DEFAULT: '#6B2D5E',
-          dark: '#4A1F42',
-          deep: '#2D1028',
+          light: '#C2185B',    // deep rose — primary accent, buttons, active
+          DEFAULT: '#3D0026',  // dark berry — text headings
+          dark: '#880E4F',     // darker rose
+          deep: '#1a000d',     // very dark — dark mode bg
         },
       },
       fontFamily: {
@@ -34,7 +35,6 @@ const config: Config = {
         'float-slow': 'float 5s ease-in-out infinite',
         'fade-in': 'fadeIn 0.3s ease-in-out',
         'slide-up': 'slideUp 0.3s ease-out',
-        'slide-in-right': 'slideInRight 0.3s ease-out',
         'scale-in': 'scaleIn 0.2s ease-out',
         'checkmark': 'checkmark 0.4s ease-in-out',
         'shimmer': 'shimmer 2s linear infinite',
@@ -52,10 +52,6 @@ const config: Config = {
           '0%': { opacity: '0', transform: 'translateY(10px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
-        slideInRight: {
-          '0%': { opacity: '0', transform: 'translateX(20px)' },
-          '100%': { opacity: '1', transform: 'translateX(0)' },
-        },
         scaleIn: {
           '0%': { opacity: '0', transform: 'scale(0.95)' },
           '100%': { opacity: '1', transform: 'scale(1)' },
@@ -69,9 +65,6 @@ const config: Config = {
           '0%': { backgroundPosition: '-200% 0' },
           '100%': { backgroundPosition: '200% 0' },
         },
-      },
-      backdropBlur: {
-        xs: '2px',
       },
     },
   },

@@ -30,7 +30,7 @@ export default function AISuggestModal({ task, onClose }: AISuggestModalProps) {
       setSuggestions(data.suggestions)
       setLoaded(true)
     } catch {
-      toast.error('Could not get AI suggestions. Check your API key.')
+      toast.error('Could not get AI suggestions. Check your GROQ_API_KEY.')
     } finally {
       setLoading(false)
     }
@@ -52,7 +52,7 @@ export default function AISuggestModal({ task, onClose }: AISuggestModalProps) {
               <h2 className="font-playfair text-base font-bold text-plum dark:text-pink-200">
                 AI Suggestions
               </h2>
-              <p className="text-xs text-mauve/70 dark:text-pink-300/50">Powered by Claude</p>
+              <p className="text-xs text-mauve/70 dark:text-pink-300/50">Powered by Groq · Llama 3.1</p>
             </div>
           </div>
           <button

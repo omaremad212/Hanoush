@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/authOptions'
 import { prisma } from '@/lib/prisma'
 import { z } from 'zod'
 
@@ -7,16 +9,26 @@ const reorderSchema = z.object({
 })
 
 export async function PATCH(req: NextRequest) {
+  const session = await getServerSession(authOptions)
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
   try {
     const body = await req.json()
     const { ids } = reorderSchema.parse(body)
 
+    // Verify all tasks belong to this user
+    const owned = await prisma.task.count({
+      where: { id: { in: ids }, userId: session.user.id },
+    })
+    if (owned !== ids.length) {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+    }
+
     await prisma.$transaction(
       ids.map((id, index) =>
-        prisma.task.update({
-          where: { id },
-          data: { order: index },
-        })
+        prisma.task.update({ where: { id }, data: { order: index } })
       )
     )
 
