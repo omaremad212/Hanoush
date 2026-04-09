@@ -19,14 +19,13 @@ const dmSans = DM_Sans({
 export const metadata: Metadata = {
   title: 'Hanoush — Content Creator Dashboard',
   description: 'Your personal luxury task manager for content creators',
-  icons: { icon: '/favicon.ico' },
+  icons: { icon: '/avatar.jpg' },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en">
       <body className={`${playfair.variable} ${dmSans.variable} font-dm antialiased`}>
-        <ThemeScript />
         <SessionProvider>
           {children}
         </SessionProvider>
@@ -50,24 +49,5 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </body>
     </html>
-  )
-}
-
-function ThemeScript() {
-  return (
-    <script
-      dangerouslySetInnerHTML={{
-        __html: `
-          (function() {
-            try {
-              const theme = localStorage.getItem('theme');
-              if (theme === 'dark') {
-                document.documentElement.classList.add('dark');
-              }
-            } catch(e) {}
-          })();
-        `,
-      }}
-    />
   )
 }
