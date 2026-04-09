@@ -7,29 +7,23 @@ interface StatCardProps {
   title: string
   value: number
   icon: React.ReactNode
-  gradient: string
+  valueColor: string
+  iconBg: string
   delay?: string
 }
 
-function StatCard({ title, value, icon, gradient, delay = '0s' }: StatCardProps) {
+function StatCard({ title, value, icon, valueColor, iconBg, delay = '0s' }: StatCardProps) {
   return (
     <div
-      className={cn(
-        'glass rounded-2xl p-5 card-shadow animate-float',
-        'transition-all duration-300 hover:scale-105 hover:shadow-lg'
-      )}
+      className="bg-white rounded-2xl p-5 border border-pink-100 card-shadow animate-float hover:scale-105 transition-transform duration-200 cursor-default"
       style={{ animationDelay: delay }}
     >
       <div className="flex items-start justify-between">
         <div>
-          <p className="text-xs font-semibold text-mauve/70 dark:text-pink-300/60 uppercase tracking-wider mb-1">
-            {title}
-          </p>
-          <p className={cn('text-3xl font-bold font-playfair', gradient)}>
-            {value}
-          </p>
+          <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">{title}</p>
+          <p className={cn('text-3xl font-bold font-playfair', valueColor)}>{value}</p>
         </div>
-        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-plum/10 to-mauve/20 dark:from-plum/40 dark:to-mauve/30 flex items-center justify-center text-plum dark:text-mauve">
+        <div className={cn('w-10 h-10 rounded-xl flex items-center justify-center', iconBg)}>
           {icon}
         </div>
       </div>
@@ -39,7 +33,7 @@ function StatCard({ title, value, icon, gradient, delay = '0s' }: StatCardProps)
 
 function StatCardSkeleton() {
   return (
-    <div className="glass rounded-2xl p-5 card-shadow">
+    <div className="bg-white rounded-2xl p-5 border border-pink-100">
       <div className="flex items-start justify-between">
         <div className="space-y-2">
           <div className="skeleton h-3 w-24 rounded" />
@@ -51,18 +45,11 @@ function StatCardSkeleton() {
   )
 }
 
-interface StatsCardsProps {
-  stats: StatsData | null
-  loading?: boolean
-}
-
-export default function StatsCards({ stats, loading }: StatsCardsProps) {
+export default function StatsCards({ stats, loading }: { stats: StatsData | null; loading?: boolean }) {
   if (loading || !stats) {
     return (
       <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
-        {Array.from({ length: 4 }).map((_, i) => (
-          <StatCardSkeleton key={i} />
-        ))}
+        {Array.from({ length: 4 }).map((_, i) => <StatCardSkeleton key={i} />)}
       </div>
     )
   }
@@ -71,54 +58,40 @@ export default function StatsCards({ stats, loading }: StatsCardsProps) {
     {
       title: 'Total Tasks',
       value: stats.total,
-      gradient: 'gradient-text',
+      valueColor: 'text-[#3D0026]',
+      iconBg: 'bg-[#FFF0F3]',
       delay: '0s',
-      icon: (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-        </svg>
-      ),
+      icon: <svg className="w-5 h-5 text-[#C2185B]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>,
     },
     {
       title: 'Done Today',
       value: stats.completedToday,
-      gradient: 'text-emerald-600 dark:text-emerald-400',
-      delay: '0.5s',
-      icon: (
-        <svg className="w-5 h-5 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-      ),
+      valueColor: 'text-emerald-600',
+      iconBg: 'bg-emerald-50',
+      delay: '0.4s',
+      icon: <svg className="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>,
     },
     {
       title: 'Pending',
       value: stats.pending,
-      gradient: 'text-amber-600 dark:text-amber-400',
-      delay: '1s',
-      icon: (
-        <svg className="w-5 h-5 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-      ),
+      valueColor: 'text-amber-600',
+      iconBg: 'bg-amber-50',
+      delay: '0.8s',
+      icon: <svg className="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>,
     },
     {
       title: 'Overdue',
       value: stats.overdue,
-      gradient: 'text-rose-600 dark:text-rose-400',
-      delay: '1.5s',
-      icon: (
-        <svg className="w-5 h-5 text-rose-600 dark:text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-        </svg>
-      ),
+      valueColor: 'text-red-600',
+      iconBg: 'bg-red-50',
+      delay: '1.2s',
+      icon: <svg className="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>,
     },
   ]
 
   return (
     <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
-      {cards.map((card) => (
-        <StatCard key={card.title} {...card} />
-      ))}
+      {cards.map((card) => <StatCard key={card.title} {...card} />)}
     </div>
   )
 }

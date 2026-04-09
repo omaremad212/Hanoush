@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Playfair_Display, DM_Sans } from 'next/font/google'
 import './globals.css'
 import { Toaster } from 'react-hot-toast'
+import SessionProvider from '@/components/SessionProvider'
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
@@ -16,40 +17,34 @@ const dmSans = DM_Sans({
 })
 
 export const metadata: Metadata = {
-  title: 'Hanoush — Luxury To-Do Dashboard',
-  description: 'Your elegant personal task manager',
-  icons: {
-    icon: '/favicon.ico',
-  },
+  title: 'Hanoush — Content Creator Dashboard',
+  description: 'Your personal luxury task manager for content creators',
+  icons: { icon: '/favicon.ico' },
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${playfair.variable} ${dmSans.variable} font-dm antialiased bg-cream dark:bg-plum-deep`}>
+      <body className={`${playfair.variable} ${dmSans.variable} font-dm antialiased`}>
         <ThemeScript />
-        {children}
+        <SessionProvider>
+          {children}
+        </SessionProvider>
         <Toaster
           position="top-right"
           toastOptions={{
             duration: 3000,
             style: {
-              background: '#FFF5F5',
-              color: '#6B2D5E',
-              border: '1px solid #C8A2C8',
-              borderRadius: '12px',
+              background: '#ffffff',
+              color: '#3D0026',
+              border: '1px solid #FFB6C1',
+              borderRadius: '14px',
               fontFamily: 'DM Sans, sans-serif',
               fontSize: '14px',
+              boxShadow: '0 4px 20px rgba(194,24,91,0.10)',
             },
             success: {
-              iconTheme: {
-                primary: '#6B2D5E',
-                secondary: '#FFF5F5',
-              },
+              iconTheme: { primary: '#C2185B', secondary: '#ffffff' },
             },
           }}
         />
@@ -66,7 +61,7 @@ function ThemeScript() {
           (function() {
             try {
               const theme = localStorage.getItem('theme');
-              if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+              if (theme === 'dark') {
                 document.documentElement.classList.add('dark');
               }
             } catch(e) {}
