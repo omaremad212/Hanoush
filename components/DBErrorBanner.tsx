@@ -1,17 +1,39 @@
 'use client'
 
+import { useState } from 'react'
+
 interface DBErrorBannerProps {
   message: string
 }
 
 export default function DBErrorBanner({ message }: DBErrorBannerProps) {
+  const [copied, setCopied] = useState(false)
+
+  const isSchemaError =
+    message.includes('SCHEMA_OUTDATED') ||
+    message.includes('userId') ||
+    message.includes('imageUrl') ||
+    message.includes('does not exist')
+
   const isEnvError =
-    message.toLowerCase().includes('database_url') ||
-    message.toLowerCase().includes('connection failed') ||
-    message.toLowerCase().includes('connect')
+    !isSchemaError && (
+      message.toLowerCase().includes('database_url') ||
+      message.toLowerCase().includes('connection failed') ||
+      message.toLowerCase().includes('connect')
+    )
+
+  const sql = `ALTER TABLE "Task" ADD COLUMN IF NOT EXISTS "userId" TEXT NOT NULL DEFAULT '';
+ALTER TABLE "Task" ADD COLUMN IF NOT EXISTS "imageUrl" TEXT;
+CREATE INDEX IF NOT EXISTS "Task_userId_idx" ON "Task"("userId");`
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(sql)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
 
   return (
-    <div className="rounded-2xl border border-rose-200 dark:border-rose-800/40 bg-rose-50/80 dark:bg-rose-900/20 p-5 space-y-3">
+    <div className="rounded-2xl border border-rose-200 bg-rose-50/80 p-5 space-y-3 dark:border-rose-800/40 dark:bg-rose-900/20">
       <div className="flex items-start gap-3">
         <div className="w-9 h-9 rounded-xl bg-rose-100 dark:bg-rose-900/40 flex items-center justify-center flex-shrink-0">
           <svg className="w-5 h-5 text-rose-600 dark:text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -20,13 +42,41 @@ export default function DBErrorBanner({ message }: DBErrorBannerProps) {
         </div>
         <div>
           <p className="font-semibold text-rose-700 dark:text-rose-400 text-sm">
-            {isEnvError ? 'Database not connected' : 'Could not load tasks'}
+            {isSchemaError ? 'Database schema outdated' : isEnvError ? 'Database not connected' : 'Could not load tasks'}
           </p>
-          <p className="text-xs text-rose-600/80 dark:text-rose-400/70 mt-0.5 leading-relaxed">
-            {message}
+          <p className="text-xs text-rose-600/80 dark:text-rose-400/70 mt-0.5 leading-relaxed line-clamp-2">
+            {isSchemaError
+              ? 'Missing columns: userId and imageUrl. Run the SQL below in Vercel Postgres to fix instantly.'
+              : message}
           </p>
         </div>
       </div>
+
+      {isSchemaError && (
+        <div className="pl-12 space-y-3">
+          <p className="text-xs font-semibold text-rose-700 dark:text-rose-400 uppercase tracking-wide">
+            Fix in 2 steps:
+          </p>
+          <ol className="text-xs text-rose-600/80 dark:text-rose-400/60 space-y-1 list-decimal list-inside">
+            <li>Go to <strong>Vercel → Storage → your Postgres DB → Query</strong></li>
+            <li>Paste and run this SQL:</li>
+          </ol>
+          <div className="relative">
+            <pre className="text-xs bg-rose-100 dark:bg-rose-900/40 text-rose-800 dark:text-rose-300 rounded-xl p-3 overflow-x-auto leading-relaxed whitespace-pre-wrap">
+{sql}
+            </pre>
+            <button
+              onClick={handleCopy}
+              className="absolute top-2 right-2 px-2 py-1 text-xs bg-white dark:bg-rose-800 text-rose-600 dark:text-rose-300 border border-rose-200 dark:border-rose-700 rounded-lg hover:bg-rose-50 transition-colors"
+            >
+              {copied ? '✓ Copied' : 'Copy'}
+            </button>
+          </div>
+          <p className="text-xs text-rose-500/70 dark:text-rose-400/50">
+            Or run locally: <code className="bg-rose-100 dark:bg-rose-900/40 px-1 py-0.5 rounded">dotenv -e .env.local -- npx prisma db push</code>
+          </p>
+        </div>
+      )}
 
       {isEnvError && (
         <div className="pl-12 space-y-1.5">
