@@ -1,66 +1,63 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 
-const MESSAGES = [
+// Fallback messages if Groq API is unavailable
+const FALLBACKS = [
   "Your content is going to change someone's day today! ✨",
   "استمري، أنتِ أقرب مما تتخيلي 🌸",
   "You're a creative queen, keep going! 👑",
   "كل خطوة صغيرة تقربك من حلمك 💕",
   "The world needs your unique voice! 🎀",
   "شغلك بيلمع، استمري في الإبداع 💫",
-  "You show up every day — that's already a superpower 🌷",
-  "محتواكِ بيفرق في حياة ناس كتير 🤍",
-  "Rest if you need to, but don't you dare quit 🌙",
-  "أنتِ مش بس content creator، أنتِ فنانة 🎨",
-  "Every post you make is a little piece of magic ✨",
-  "روحكِ الحلوة بتبان في كل حاجة بتعمليها 🌸",
-  "You're building something beautiful — trust the process 💗",
-  "اليوم ده هيكون أحسن من امبارح، واصلي 🌼",
-  "Your ideas matter more than you know 💡",
-  "أنتِ قادرة على أي حاجة تحطيها في بالك 🦋",
-  "Small steps every day = big dreams one day 🚀",
-  "الجمهور بينتظرك، أنتِ ما شاء الله عليكِ 💖",
-  "You are exactly where you need to be right now 🌿",
-  "طاقتكِ الإيجابية بتوصل لكل الناس 🌞",
-  "Keep creating — the best is yet to come 🎀",
-  "حلمك مش بعيد، هو بس في الطريق إليكِ 💫",
-  "You inspire people without even realising it 🌹",
-  "خذي نفس، أنتِ بتعملي رائع! 🌬️💕",
 ]
 
 const INTERVAL_MS = 5 * 60 * 1000 // 5 minutes
+
+async function fetchMotivationalMessage(): Promise<string> {
+  const res = await fetch('/api/motivational')
+  if (!res.ok) throw new Error('API error')
+  const data = await res.json()
+  if (!data.message) throw new Error('No message')
+  return data.message
+}
 
 export default function MotivationalToasts() {
   const [visible, setVisible] = useState(false)
   const [message, setMessage] = useState('')
   const [exiting, setExiting] = useState(false)
-  const lastIndexRef = useRef(-1)
+  const [loading, setLoading] = useState(false)
   const dismissTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const fallbackIdx = useRef(0)
 
-  const pickMessage = () => {
-    let idx
-    do {
-      idx = Math.floor(Math.random() * MESSAGES.length)
-    } while (idx === lastIndexRef.current)
-    lastIndexRef.current = idx
-    return MESSAGES[idx]
-  }
+  const dismiss = useCallback(() => {
+    setExiting(true)
+    setTimeout(() => setVisible(false), 350)
+  }, [])
 
-  const show = () => {
+  const show = useCallback(async () => {
     if (document.visibilityState !== 'visible') return
-    setMessage(pickMessage())
+    if (loading) return
+
+    setLoading(true)
+    let msg: string
+    try {
+      msg = await fetchMotivationalMessage()
+    } catch {
+      // Cycle through fallbacks if API fails
+      msg = FALLBACKS[fallbackIdx.current % FALLBACKS.length]
+      fallbackIdx.current++
+    } finally {
+      setLoading(false)
+    }
+
+    setMessage(msg)
     setExiting(false)
     setVisible(true)
 
     if (dismissTimer.current) clearTimeout(dismissTimer.current)
     dismissTimer.current = setTimeout(() => dismiss(), 4000)
-  }
-
-  const dismiss = () => {
-    setExiting(true)
-    setTimeout(() => setVisible(false), 350)
-  }
+  }, [loading, dismiss])
 
   useEffect(() => {
     const interval = setInterval(show, INTERVAL_MS)
@@ -68,8 +65,7 @@ export default function MotivationalToasts() {
       clearInterval(interval)
       if (dismissTimer.current) clearTimeout(dismissTimer.current)
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [show])
 
   if (!visible) return null
 
