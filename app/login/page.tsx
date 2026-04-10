@@ -3,7 +3,6 @@
 import { signIn, useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import Image from 'next/image'
 
 export default function LoginPage() {
   const { data: session, status } = useSession()
@@ -40,11 +39,10 @@ export default function LoginPage() {
       <div className="relative bg-white rounded-3xl p-10 shadow-xl border border-pink-100 w-full max-w-sm text-center animate-scale-in">
         {/* Avatar replacing star icon */}
         <div className="w-20 h-20 mx-auto mb-5 rounded-full overflow-hidden shadow-lg ring-4 ring-pink-100">
-          <Image
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
             src="/favicon.png"
             alt="Hanoush"
-            width={80}
-            height={80}
             className="w-full h-full object-cover"
           />
         </div>
