@@ -41,7 +41,7 @@ export default function LoginPage() {
         <div className="w-20 h-20 mx-auto mb-5 rounded-full overflow-hidden shadow-lg ring-4 ring-pink-100">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/favicon.png"
+            src="/avatar.jpg"
             alt="Hanoush"
             className="w-full h-full object-cover"
           />
