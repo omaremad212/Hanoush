@@ -144,3 +144,15 @@ body {
   @apply bg-gray-50 text-gray-500 border border-gray-200
          dark:bg-[#3d0030] dark:text-pink-300/60 dark:border-[#E91E8C]/15;
 }
+
+/* ── Motivational toast animations ─────────────────── */
+@keyframes toastSlideIn {
+  from { transform: translateX(110%); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}
+@keyframes toastSlideOut {
+  from { transform: translateX(0);    opacity: 1; }
+  to   { transform: translateX(110%); opacity: 0; }
+}
+.motivational-enter { animation: toastSlideIn 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+.motivational-exit  { animation: toastSlideOut 0.35s ease-in forwards; }
